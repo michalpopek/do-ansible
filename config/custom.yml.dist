@@ -1,0 +1,7 @@
+# DO API v2 settings
+do_api_token: ~
+
+# DO SSH key settings
+# If your key is already registered in DO, use this variable.
+# Otherwise, don't declare it and your key will be added automatically.
+do_ssh_key_id: ~

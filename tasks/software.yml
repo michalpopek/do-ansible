@@ -1,0 +1,50 @@
+- name: Install updates
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install packages
+  apt: 
+    pkg: "{{ item }}" 
+    state: latest
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - fail2ban    
+    - ntp
+    - python3-pip
+    - software-properties-common
+    - openjdk-8-jdk
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+
+- name: Install Docker
+  apt:
+    name: docker-ce=17.09.0~ce-0~ubuntu
+    update_cache: yes
+    state: present
+
+- name: Install Docker Compose
+  pip:
+    name: docker-compose==1.16.1
+    state: present
+
+- name: Ensure services are running and enabled
+  service: 
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - docker
+    - fail2ban  
+    - ntp
+    
